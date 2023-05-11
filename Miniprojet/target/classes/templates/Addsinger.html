@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+<head>
+    <meta charset="UTF-8">
+    <title>new  Singer</title>
+</head>
+<body>
+<div th:replace="nav"></div>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h1 th:if="${pg=='ajoute'}" class="card-title">Add Singer</h1>
+            <h1 th:if="${pg=='modifer'}" class="card-title">Update Singer</h1>
+
+            <form th:action="@{/save}" method="post">
+                <label class="control-label" hidden="hidden" >page :</label>
+                <input type="text" name="page" hidden="hidden" class="form-control"
+                       th:value="${page}" />
+                <div class="form-group">
+                    <input type="hidden" name="IdSinger" class="form-control" th:value="${Singer.IdSinger}" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">name</label>
+                    <input type="text" name="name" class="form-control" th:value="${Singer.name}" />
+                    <span th:errors=${Singer.name} class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Feature PRICE</label>
+                    <input type="text" name="Featureprice" class="form-control" th:value="${Singer.Featureprice}"/>
+                    <span th:errors=${Singer.Featureprice} class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Date Birth</label>
+                    <input type="date" name="dateBirth" class="form-control" id="dateachat"th:value="${#dates.format(Singer.getDateBirth(),'yyyy-MM-dd')}"  />
+                    <span th:errors=${Singer.dateBirth} class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label" >Catégorie</label>
+                    <select class="custom-select" aria-label=".form-select-lg example"  name="ty">
+                        <option th:if="${pg=='modifer'}" th:value="${Singer.getType().getIdType()}" th:text="${Singer.getType().getTypeName()}" ></option>
+                        <option th:each="u : ${type}" th:value="${u.getIdType()}" th:text="${u.getTypeName}" ></option>
+                    </select>
+                </div>
+
+                <div class="form-group flex flex-row">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <a th:href="@{Singers}" class="btn btn-success">Singer List</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

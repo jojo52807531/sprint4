@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<div th:replace="nav"></div>
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h3>Type List</h3>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Id Type</th>
+          <th>Type Name</th>
+
+          <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" >Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${types }">
+          <td th:text="${u.getIdType}"></td>
+          <td th:text="${u.getTypeName}"></td>
+
+          <td>
+            <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"  th:href="@{deletetype(idtype=${u.getIdType})}" class="btn btn-danger" onclick="confirm('Are you sure?')">Delete</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

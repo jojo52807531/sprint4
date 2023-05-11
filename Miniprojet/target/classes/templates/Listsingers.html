@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Singer List</title>
+</head>
+<body>
+<div th:replace="nav"></div>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h3>Singer List</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id Singer</th>
+                    <th>Singer Name</th>
+                    <th>Feature Price</th>
+                    <th>DateBirth </th>
+                    <th>Type</th>
+                    <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" >Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="singer : ${Singers.content}">
+                    <td th:text="${singer.IdSinger}"></td>
+                    <td th:text="${singer.name}"></td>
+                    <td th:text="${singer.Featureprice}"></td>
+                    <td th:text="${#dates.format(singer.getDateBirth(), 'dd-MM-yyyy')}"></td>
+                    <td th:text="${singer.Type.TypeName}"></td>
+                    <td>
+                        <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{showUpdate(IdSinger=${singer.IdSinger}, page=${currentPage}, size=${size})}" class="btn btn-primary">Edit</a>
+                        <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{deletesinger(IdSinger=${singer.IdSinger}, page=${currentPage}, size=${size})}" class="btn btn-danger" onclick="confirm('Are you sure?')">Delete</a>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="nav nav-pills">
+                <li th:each="page,status: ${pages}" class="nav-item">
+                    <a th:class="${status.index == currentPage ? 'btn btn-primary' : 'btn btn-outline-primary'}"
+                       th:href="@{Singers(page=${status.index}, size=${size})}"
+                       th:text="${status.index + 1}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
